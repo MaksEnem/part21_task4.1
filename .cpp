@@ -134,6 +134,10 @@ int main() {
 
 	initializing_fieid(field);
 
+	
+
+
+
 	for (int i = 0; i < 6; ++i) {
 
 		initializing_game_fieid_opponents(opponents[i], field, i);
@@ -142,6 +146,9 @@ int main() {
 	bool is_result = true;
 	int step;
 	std::string step_hero;
+
+
+	
 
 	while (is_result) {
 
@@ -186,7 +193,7 @@ int main() {
 
 							for (int j = 5; j > 0; --j) {
 
-								if (field[opponents[j].coordinate_x][opponents[j].coordinate_y] == field[opponents[i].coordinate_x][opponents[i].coordinate_y]) {
+								if (opponents[j].coordinate_x == opponents[i].coordinate_x && opponents[j].coordinate_y == opponents[i].coordinate_y) {
 
 									hero_damage_opponents(opponents[i], opponents[j]);
 
@@ -202,7 +209,7 @@ int main() {
 										field[opponents[i].coordinate_x][opponents[i].coordinate_y] = 'P';
 										opponents[j].is_life = false;
 										--opponents[i].number_of_opponents;
-										std::cout << opponents[i].number_of_opponents << std::endl;
+										
 										if (opponents[i].number_of_opponents <= 0) {
 
 											std::cout << "You victory" << std::endl;
@@ -240,7 +247,7 @@ int main() {
 
 							for (int j = 5; j > 0; --j) {
 
-								if (field[opponents[j].coordinate_x][opponents[j].coordinate_y] == field[opponents[i].coordinate_x][opponents[i].coordinate_y]) {
+								if (opponents[j].coordinate_x == opponents[i].coordinate_x && opponents[j].coordinate_y == opponents[i].coordinate_y) {
 
 									hero_damage_opponents(opponents[i], opponents[j]);
 
@@ -255,9 +262,10 @@ int main() {
 										field[opponents[j].coordinate_x][opponents[j].coordinate_y] = '.';
 										field[opponents[i].coordinate_x][opponents[i].coordinate_y] = 'P';
 										opponents[j].is_life = false;
-										--opponents[i].number_of_opponents;
-										std::cout << opponents[i].number_of_opponents << std::endl;
-										if (opponents[i].number_of_opponents < 0) {
+										--opponents[i].number_of_opponents;										
+										playing_field(field);
+										
+										if (opponents[i].number_of_opponents <= 0) {
 
 											std::cout << "You victory" << std::endl;
 											is_result = false;
@@ -292,7 +300,7 @@ int main() {
 
 							for (int j = 5; j > 0; --j) {
 
-								if (field[opponents[j].coordinate_x][opponents[j].coordinate_y] == field[opponents[i].coordinate_x][opponents[i].coordinate_y]) {
+								if (opponents[j].coordinate_x == opponents[i].coordinate_x && opponents[j].coordinate_y == opponents[i].coordinate_y) {
 
 									hero_damage_opponents(opponents[i], opponents[j]);
 
@@ -306,10 +314,10 @@ int main() {
 
 										field[opponents[j].coordinate_x][opponents[j].coordinate_y] = '.';
 										field[opponents[i].coordinate_x][opponents[i].coordinate_y] = 'P';
-										opponents[i].is_life = false;
+										opponents[j].is_life = false;
 										--opponents[i].number_of_opponents;
-										std::cout << opponents[i].number_of_opponents << std::endl;
-										if (opponents[i].number_of_opponents < 0) {
+										
+										if (opponents[i].number_of_opponents <= 0) {
 
 											std::cout << "You victory" << std::endl;
 											is_result = false;
@@ -344,7 +352,7 @@ int main() {
 
 							for (int j = 5; j > 0; --j) {
 
-								if (field[opponents[j].coordinate_x][opponents[j].coordinate_y] == field[opponents[i].coordinate_x][opponents[i].coordinate_y]) {
+								if (opponents[j].coordinate_x == opponents[i].coordinate_x && opponents[j].coordinate_y == opponents[i].coordinate_y) {
 
 									hero_damage_opponents(opponents[i], opponents[j]);
 
@@ -360,8 +368,8 @@ int main() {
 										field[opponents[i].coordinate_x][opponents[i].coordinate_y] = 'P';
 										opponents[j].is_life = false;
 										--opponents[i].number_of_opponents;
-										std::cout << opponents[i].number_of_opponents << std::endl;
-										if (opponents[i].number_of_opponents < 0) {
+										
+										if (opponents[i].number_of_opponents <= 0) {
 											
 											std::cout << "You victory" << std::endl;
 											is_result = false;

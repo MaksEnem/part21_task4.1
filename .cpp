@@ -117,6 +117,53 @@ void hero_damage_opponents(Ñharacters& hero, Ñharacters& opponents) {
 	}
 }
 
+void save_opponents(std::ofstream& out_file, Ñharacters& opponents, int & j) {
+
+	int len = opponents.name.length();
+	out_file.write((char*)&len, sizeof(len));
+	out_file.write(opponents.name.c_str(), len);
+	out_file.write((char*)&opponents.health_points, sizeof(opponents.health_points));
+	out_file.write((char*)&opponents.armor, sizeof(opponents.armor));
+	out_file.write((char*)&opponents.damage, sizeof(opponents.damage));
+	out_file.write((char*)&opponents.coordinate_x, sizeof(opponents.coordinate_x));
+	out_file.write((char*)&opponents.coordinate_y, sizeof(opponents.coordinate_y));	
+
+	if (j ==0) {
+
+		out_file.write((char*)&opponents.number_of_opponents, sizeof(opponents.number_of_opponents));
+
+	}
+	else {
+
+		out_file.write((char*)&opponents.is_life, sizeof(opponents.is_life));
+
+	}
+}
+
+void load_opponents(std::ifstream& in_file, Ñharacters& opponents, int& j) {
+
+	int len;
+	in_file.read((char*)&len, sizeof(len));
+	opponents.name.resize(len);
+	in_file.read((char*)opponents.name.c_str(), len);
+	in_file.read((char*)&opponents.health_points, sizeof(opponents.health_points));
+	in_file.read((char*)&opponents.armor, sizeof(opponents.armor));
+	in_file.read((char*)&opponents.damage, sizeof(opponents.damage));
+	in_file.read((char*)&opponents.coordinate_x, sizeof(opponents.coordinate_x));
+	in_file.read((char*)&opponents.coordinate_y, sizeof(opponents.coordinate_y));
+	
+	if (j == 0) {
+
+		in_file.read((char*)&opponents.number_of_opponents, sizeof(opponents.number_of_opponents));
+
+	}
+	else {
+
+		in_file.read((char*)&opponents.is_life, sizeof(opponents.is_life));
+
+	}
+}
+
 
 int main() {
 
@@ -169,12 +216,64 @@ int main() {
 
 				if (step_hero == "save") {
 
+					std::ofstream out_file("save.bin", std::ios::binary);
 
+					if (out_file.is_open()) {
+
+						for (int j = 0; j < 6; ++j) {
+
+							save_opponents(out_file, opponents[j], j);
+
+						}
+
+						out_file.close();
+						std::cout << "File saved successfully\n";
+					}
+					else {
+
+						std::cout << "WARNING!\n";
+						std::cout << "ERROR!!!\n";
+						std::cout << "File is not open\n";
+
+					}
 
 				}
 				else if (step_hero == "load") {
 
+					std::ifstream in_file;
 
+					in_file.open("save.bin", std::ios::binary);
+
+					if (in_file.is_open()) {
+
+						std::cout << "File is open\n";
+
+						for (int j = 0; j < 6; ++j) {
+
+							load_opponents(in_file, opponents[j], j);
+							
+							if (j == 0) {
+
+								std::cout << " number_of_opponents: " << " " << opponents[j].number_of_opponents << std::endl;
+
+							}
+							else {
+
+								std::cout << " is_life: " << " " << opponents[j].is_life << std::endl;
+
+							}
+						}
+
+						in_file.close();
+
+					}
+					else {
+
+						std::cout << "WARNING!\n";
+						std::cout << "ERROR!!!\n";
+						std::cout << "File is not open\n";
+
+					}
 
 				}else if (step_hero == "l") {
 
@@ -327,7 +426,6 @@ int main() {
 									break;
 								}
 							}
-
 						}
 						else {
 
@@ -385,12 +483,10 @@ int main() {
 							field[opponents[i].coordinate_x][opponents[i].coordinate_y] = 'P';
 
 						}
-
 					}
 				}
 				
-				std::cout << std::endl;
-				std::cout << opponents[0].number_of_opponents << std::endl;
+				std::cout << std::endl;				
 			}
 		}
 	}
